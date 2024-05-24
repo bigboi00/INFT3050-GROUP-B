@@ -1,4 +1,5 @@
-//In Progress
+// ProductController class for handling product-related actions
+// Index action for displaying a list of products
 using INFT3050.Models;
 using Microsoft.AspNetCore.Mvc;
 
