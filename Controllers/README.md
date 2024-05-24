@@ -1,3 +1,3 @@
-# Controllers
+# Controller
 
 In Progress
