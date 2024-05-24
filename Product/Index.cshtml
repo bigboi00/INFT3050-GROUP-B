@@ -1,24 +1,25 @@
-//In Progress
+// Razor view for displaying a list of products
+// Model type: IEnumerable<INFT3050.Models.Product>
 @model IEnumerable<INFT3050.Models.Product>
 
 @{
-    ViewBag.Title = "Product";
+    ViewBag.Title = "Product"; // Setting the title of the view
 }
 
-<h2>Products</h2>
+<h2>Products</h2> // Heading for the product list
 
 <div class="row">
-    @foreach (var product in Model)
+    @foreach (var product in Model) // Iterating over each product in the model
     {
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
-                <img class="card-img-top" src="@product.ImageUrl" alt="@product.Name" />
+                <img class="card-img-top" src="@product.ImageUrl" alt="@product.Name" /> // Displaying product image
                 <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">@product.Description</p>
+                    <h5 class="card-title">@product.Name</h5> // Displaying product name
+                    <p class="card-text">@product.Description</p> // Displaying product description
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-muted">@product.Price:C</span>
-                        <a href="#" class="btn btn-sm btn-primary">Add to Cart</a>
+                        <span class="text-muted">@product.Price:C</span> // Displaying product price in currency format
+                        <a href="#" class="btn btn-sm btn-primary">Add to Cart</a> // Button for adding product to cart
                     </div>
                 </div>
             </div>
