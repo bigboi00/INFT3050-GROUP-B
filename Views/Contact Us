@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>LUXE</title>
+</head>
+
+<body>
+  <nav>
+    <div>
+      <img src="images/logo.png" alt="Luxe Logo" class="logotwo">
+    </div>
+    <div class="heading">
+      <h4>LUXE</h4>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+        <li><a href="privacy.html">Furnitures</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a class="active" href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="banner">
+    <img src="images/contactus.png"
+      alt="Welcome to our Contact Us page">
+    <h1>Get in Touch With Luxe</h1><br>
+    <p>We're here to answer any questions you may have to improve our Luxe.</p>
+  </section>
+
+  <section class="contact-form">
+    <div class="form-container"><br>
+      <h2>Fill in Contact Form</h2><br>
+      <form action="https://jkorpela.fi/cgi-bin/echo.cgi" method="POST" id="contact-form">
+        <label for="name">First Name:</label>
+        <input type="text" id="name" name="name" required><br>
+          
+        <label for="name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required><br>
+
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required><br>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="4" required></textarea><br>
+
+        <button type="submit" class="submit-button">Submit</button>
+        <button type="reset" class="submit-button">Clear</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="contact-info">
+    <h2>Contact Information</h2>
+    <address>
+      Luxe Furniture<br>
+      Marina Square, 6 Raffles Blvd, #03-200<br>
+      Singapore, 039594<br>
+      Phone: <a href="tel:63909214">63909214</a><br>
+      Email: <a href="mailto:luxefurnitures@gmail.com">luxefurnitures@gmail.com</a>
+    </address>
+  </section>
+
+  <footer>
+    <p>© 2024 Luxe Furnitures. All rights reserved.</p>
+  </footer>
+
+
+</body>
+
+</html>
