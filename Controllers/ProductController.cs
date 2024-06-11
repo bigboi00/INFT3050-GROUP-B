@@ -1,4 +1,4 @@
-﻿using INFT3050.Data;
+using INFT3050.Data;
 using INFT3050.Models;
 using INFT3050.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -10,20 +10,25 @@ namespace INFT3050.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+        // Constructor to inject the database context
         public ProductController(ApplicationDbContext context)
         {
             _context = context;
         }
 
+        // GET: /Product/Index
+        // Retrieves and displays a list of all products, including their categories, ordered by product name
         public async Task<IActionResult> Index()
         {
             var products = _context.Products
-                .Include(p => p.Category    )
-               .OrderBy(p => p.Name)
-               .ToList();
+                .Include(p => p.Category)
+                .OrderBy(p => p.Name)
+                .ToList();
             return View(products);
         }
 
+        // GET: /Product/Add
+        // Displays the form to add a new product
         [HttpGet]
         public IActionResult Add()
         {
@@ -32,6 +37,8 @@ namespace INFT3050.Controllers
             return View("Edit", new Product());
         }
 
+        // GET: /Product/Edit/{id}
+        // Displays the form to edit an existing product identified by its ID
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -41,15 +48,17 @@ namespace INFT3050.Controllers
             return View(product);
         }
 
+        // POST: /Product/Edit
+        // Handles the form submission for adding or editing a product
         [HttpPost]
         public IActionResult Edit(Product product)
         {
             if (ModelState.IsValid)
             {
                 if (product.ProductId == 0)
-                    _context.Products.Add(product);
+                    _context.Products.Add(product); // Add new product
                 else
-                    _context.Products.Update(product);
+                    _context.Products.Update(product); // Update existing product
                 _context.SaveChanges();
                 return RedirectToAction("Index", "Product");
             }
@@ -61,6 +70,8 @@ namespace INFT3050.Controllers
             }
         }
 
+        // GET: /Product/Delete/{id}
+        // Displays the confirmation page for deleting a product identified by its ID
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -68,6 +79,8 @@ namespace INFT3050.Controllers
             return View(product);
         }
 
+        // POST: /Product/Delete
+        // Handles the form submission to delete a product
         [HttpPost]
         public IActionResult Delete(Product product)
         {
@@ -76,6 +89,8 @@ namespace INFT3050.Controllers
             return RedirectToAction("Index", "Product");
         }
 
+        // GET: /Product/Details
+        // Displays detailed information about a product based on room, category, and product name
         [HttpGet]
         public async Task<IActionResult> Details(string room, string category, string productName)
         {
@@ -87,7 +102,7 @@ namespace INFT3050.Controllers
             var product = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.Category.Room.ToLower() == room.ToLower() &&
-                                        p.Category.Name.ToLower() == category.ToLower() &&
+                                          p.Category.Name.ToLower() == category.ToLower() &&
                                           p.Name.ToLower() == productName.ToLower());
 
             if (product == null)
@@ -97,8 +112,5 @@ namespace INFT3050.Controllers
 
             return View(product);
         }
-
-
     }
 }
-
