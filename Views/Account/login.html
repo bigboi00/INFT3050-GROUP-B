@@ -153,7 +153,22 @@
             cursor: pointer;
         }
 
-       
+        .admin-link, .employee-link {
+            display: block;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .admin-link a, .employee-link a {
+            color: #5479F7;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .admin-link a:hover, .employee-link a:hover {
+            text-decoration: underline;
+        }
 
         @media screen and (max-width: 991px) {
             .main {
@@ -208,7 +223,12 @@
                                     <div class="row">
                                         <p class="no-acc">Don't have an account?<span>Sign Up</span></p>
                                     </div>
-                                    
+                                    <div class="admin-link">
+                                        <a href="admin.html">Admin Page</a>
+                                    </div>
+                                    <div class="employee-link">
+                                        <a href="employee.html">Employee Page</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
