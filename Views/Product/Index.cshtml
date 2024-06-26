@@ -1,0 +1,46 @@
+﻿@using INFT3050.Models
+@model List<Product>
+
+@{
+    ViewData["Title"] = "Category List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Product List</h1>
+
+<div class="mb-2">
+    <a asp-controller="Product" asp-action="Add">Add New Product</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+            <th>Category</th>
+            <th></th>
+            <th>Stock</th>
+            <th></th>
+            <td>Price</td>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td></td>
+                <td>@item.Category.Name</td>
+                <td></td>
+                <td>@item.Stock</td>
+                <td></td>
+                <td>@item.Price</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-secondary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-danger">Delete</a>
+                    <a asp-controller="Product" asp-action="Details" asp-route-room="@item.Category.Room" asp-route-category="@item.Category.Name" asp-route-productName="@item.Name" class="btn btn-info">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
