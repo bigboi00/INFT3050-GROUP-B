@@ -3,6 +3,7 @@ using INFT3050.ViewModel;
 using INFT3050.Data;
 using Microsoft.EntityFrameworkCore;
 using INFT3050.Models;
+using Microsoft.Data.SqlClient;
 
 namespace INFT3050.Controllers
 {
@@ -18,7 +19,43 @@ namespace INFT3050.Controllers
             return View();
         }
 
-        public async Task<IActionResult> LivingRoom(string categoryId)
+        private string GetImageUrlForCategory(string categoryId)
+        {
+            return categoryId switch
+            {
+                "LivingRoom" => "/images/living_room.jpeg",
+                "DiningRoom" => "/images/dining_room.jpeg",
+                "BedRoom" => "/images/bedroom.jpeg",
+                "A" => "/images/tbl.jpeg",
+                "B" => "/images/sofa.jpeg",
+                "C" => "/images/tv.jpeg",
+                "D" => "/images/livingroom_shelves.jpeg",
+                "E" => "/images/headrest_sofa.jpeg",
+                "F" => "/images/diningroom.jpeg",
+                "G" => "/images/cabinet_diningroom.jpeg",
+                "H" => "/images/dining_wallapaper.jpeg",
+                "I" => "/images/main_dining_chairs.jpeg",
+                "J" => "/images/bedroom.jpeg",
+                "K" => "/images/main_bedsidetables.jpeg",
+                "L" => "/images/mirror.jpeg",
+                "M" => "/images/clothesrack.jpeg",
+                "Q" => "/images/studydesk.jpeg",
+                _ => "/images/agile.jpeg"
+            };
+        }
+
+        private IQueryable<Product> SortProducts(IQueryable<Product> products, string sortOrder)
+        {
+            return sortOrder switch
+            {
+                "az" => products.OrderBy(p => p.Name),
+                "price-high-to-low" => products.OrderByDescending(p => p.Price),
+                "price-low-to-high" => products.OrderBy(p => p.Price),
+                _ => products
+            };
+        }
+
+        public async Task<IActionResult> LivingRoom(string categoryId, string sortOrder)
         {
             if (categoryId == "LivingRoom")
             {
@@ -30,10 +67,13 @@ namespace INFT3050.Controllers
                 }
 
                 ViewBag.Title = "Living Room";
+                ViewBag.ImageUrl = GetImageUrlForCategory(categoryId);
 
-                var products = await _context.Products
-                                             .Where(p => p.Category.Room == "Living-Room")
-                                             .ToListAsync();
+                var productsQuery = _context.Products.Where(p => p.Category.Room == "Living-Room");
+
+                productsQuery = SortProducts(productsQuery, sortOrder);
+
+                var products = await productsQuery.ToListAsync();
 
                 var viewModel = products.Select(prod => new ProductCategoryVM
                 {
@@ -53,10 +93,14 @@ namespace INFT3050.Controllers
                 }
 
                 ViewBag.Title = category.Name;
+                ViewBag.ImageUrl = GetImageUrlForCategory(categoryId);
 
-                var products = await _context.Products
-                                            .Where(p => p.CategoryId == categoryId)
-                                            .ToListAsync();
+
+                var productsQuery = _context.Products.Where(p => p.CategoryId == categoryId);
+
+                productsQuery = SortProducts(productsQuery, sortOrder);
+
+                var products = await productsQuery.ToListAsync();
 
                 var viewModel = products.Select(prod => new ProductCategoryVM
                 {
@@ -68,7 +112,7 @@ namespace INFT3050.Controllers
             }
         }
 
-        public async Task<IActionResult> DiningRoom(string categoryId)
+        public async Task<IActionResult> DiningRoom(string categoryId, string sortOrder)
         {
             if (categoryId == "DiningRoom")
             {
@@ -80,10 +124,13 @@ namespace INFT3050.Controllers
                 }
 
                 ViewBag.Title = "Dining Room";
+                ViewBag.ImageUrl = GetImageUrlForCategory(categoryId);
 
-                var products = await _context.Products
-                                             .Where(p => p.Category.Room == "Dining-Room")
-                                             .ToListAsync();
+                var productsQuery = _context.Products.Where(p => p.Category.Room == "Dining-Room");
+
+                productsQuery = SortProducts(productsQuery, sortOrder);
+
+                var products = await productsQuery.ToListAsync();
 
                 var viewModel = products.Select(prod => new ProductCategoryVM
                 {
@@ -103,10 +150,13 @@ namespace INFT3050.Controllers
                 }
 
                 ViewBag.Title = category.Name;
+                ViewBag.ImageUrl = GetImageUrlForCategory(categoryId);
 
-                var products = await _context.Products
-                                            .Where(p => p.CategoryId == categoryId)
-                                            .ToListAsync();
+                var productsQuery = _context.Products.Where(p => p.CategoryId == categoryId);
+
+                productsQuery = SortProducts(productsQuery, sortOrder);
+
+                var products = await productsQuery.ToListAsync();
 
                 var viewModel = products.Select(prod => new ProductCategoryVM
                 {
@@ -118,7 +168,7 @@ namespace INFT3050.Controllers
             }
         }
 
-        public async Task<IActionResult> BedRoom(string categoryId)
+        public async Task<IActionResult> BedRoom(string categoryId, string sortOrder)
         {
             if (categoryId == "BedRoom")
             {
@@ -130,10 +180,13 @@ namespace INFT3050.Controllers
                 }
 
                 ViewBag.Title = "Bed Room";
+                ViewBag.ImageUrl = GetImageUrlForCategory(categoryId);
 
-                var products = await _context.Products
-                                            .Where(p => p.Category.Room == "Beds")
-                                            .ToListAsync();
+                var productsQuery = _context.Products.Where(p => p.Category.Room == "Beds");
+
+                productsQuery = SortProducts(productsQuery, sortOrder);
+
+                var products = await productsQuery.ToListAsync();
 
                 var viewModel = products.Select(prod => new ProductCategoryVM
                 {
@@ -153,10 +206,13 @@ namespace INFT3050.Controllers
                 }
 
                 ViewBag.Title = category.Name;
+                ViewBag.ImageUrl = GetImageUrlForCategory(categoryId);
 
-                var products = await _context.Products
-                                            .Where(p => p.CategoryId == categoryId)
-                                            .ToListAsync();
+                var productsQuery = _context.Products.Where(p => p.CategoryId == categoryId);
+
+                productsQuery = SortProducts(productsQuery, sortOrder);
+
+                var products = await productsQuery.ToListAsync();
 
                 var viewModel = products.Select(prod => new ProductCategoryVM
                 {
@@ -168,10 +224,43 @@ namespace INFT3050.Controllers
             }
         }
 
+        public async Task<IActionResult> Popular()
+        {
+
+            ViewBag.Title = "Popular";
+            var products = await _context.Products
+                                          .Where(p => p.Status == ProductStatus.Popular)
+                                          .ToListAsync();
+
+            var viewModel = products.Select(prod => new ProductCategoryVM
+            {
+                Product = prod
+            }).ToList();
+
+            return View(viewModel);
+            
+        }
+
+        public async Task<IActionResult> NewArrivals()
+        {
+
+            ViewBag.Title = "New Arrivals";
+
+            var products = await _context.Products
+                                          .Where(p => p.Status == ProductStatus.NewArrivals)
+                                          .ToListAsync();
+
+            var viewModel = products.Select(prod => new ProductCategoryVM
+            {
+                Product = prod
+            }).ToList();
+
+            return View(viewModel);
+
+        }
 
         public IActionResult Product(string name)
         {
-            // Find product by Name (assuming it's unique)
             var product = _context.Products
                                  .Include(p => p.Category)
                                  .FirstOrDefault(p => p.Name.ToLower() == name.ToLower());
