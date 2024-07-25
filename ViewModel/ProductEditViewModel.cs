@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using INFT3050.Models;
 
 namespace INFT3050.ViewModel
 {
@@ -25,5 +26,8 @@ namespace INFT3050.ViewModel
         public IFormFile ImageFile { get; set; }
 
         public string ImagePath;
+
+        [Required(ErrorMessage = "Please select product status.")]
+        public ProductStatus Status { get; set; }
     }
 }
