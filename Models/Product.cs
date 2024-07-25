@@ -27,5 +27,9 @@ namespace INFT3050.Models
         [Required(ErrorMessage = "Please input a picture.")]
         public string ImagePath { get; set; }
 
+        [DisplayName("Status")]
+        [Required(ErrorMessage = "Please select product status. ")]
+        public ProductStatus Status { get; set; }
+
     }
 }
