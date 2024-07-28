@@ -1,0 +1,118 @@
+]<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe Furniture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="shopping-cart-page">
+    <header>
+        <div class="top-bar">
+            <p>Visit our showroom at 6 Raffles Boulevard, #04-101/102, Marina Square, Singapore 039594</p>
+        </div>
+        <br><br>
+        <div class="header-content">
+            <div class="contact-info">
+                <img src="images/phone.png" alt="Phone">
+                <span>+65 1234 5678 (WhatsApp Available)</span>
+            </div>
+            <div class="logo">
+                <a href="furniture.html">
+                    <img src="images/luxe.png" alt="Luxe Furniture">
+                </a>
+            </div>
+            <div class="user-icons">
+                <a href="#"><img src="images/user.png" alt="User" class="userlogo"></a>
+                <a href="#"><img src="images/search.png" alt="Search"></a>
+                <a href="addtocart.html"><img src="images/cart.png" alt="Cart"></a>
+            </div>
+        </div>
+        <nav>
+            <ul class="main-nav">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="furniture.html">Furnitures</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1 style="font-style: italic; font-size: 36px;">Shopping Cart</h1>
+        <div class="cart-container">
+            <div class="cart-list" id="cart-list"></div>
+            <div class="cart-total" id="total-price"></div>
+            <div class="cart-actions">
+                <button id="empty-cart-btn">Empty the Cart</button>
+                <button id="buy-now-btn" style="display: none;">Buy Now</button>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let cartList = document.getElementById('cart-list');
+            let emptyCartBtn = document.getElementById('empty-cart-btn');
+            let totalPriceElem = document.getElementById('total-price');
+            let buyNowBtn = document.getElementById('buy-now-btn');
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            console.log("Cart loaded from localStorage:", cart);
+
+            function parsePrice(priceStr) {
+                try {
+                    let price = parseFloat(priceStr.replace(/[^0-9.-]+/g, ''));
+                    console.log(`Parsed price for "${priceStr}":`, price);
+                    if (isNaN(price)) {
+                        throw new Error(`Price parsing resulted in NaN for "${priceStr}"`);
+                    }
+                    return price;
+                } catch (error) {
+                    console.error(error);
+                    return 0;
+                }
+            }
+
+            function renderCart() {
+                cartList.innerHTML = '';
+                if (cart.length === 0) {
+                    cartList.innerHTML = '<p>Your cart is empty.</p>';
+                    buyNowBtn.style.display = 'none';
+                    totalPriceElem.textContent = '';
+                } else {
+                    let totalPrice = 0;
+                    cart.forEach(item => {
+                        let cartItem = document.createElement('div');
+                        cartItem.className = 'cart-item';
+                        let price = parsePrice(item.price);
+                        let itemTotal = price * item.quantity;
+                        console.log(`Item total for "${item.name}":`, itemTotal);
+                        cartItem.innerHTML = `<span>${item.name} (x${item.quantity})</span><span>SGD $${itemTotal.toFixed(2)}</span>`;
+                        cartList.appendChild(cartItem);
+                        totalPrice += itemTotal;
+                    });
+                    console.log("Total price:", totalPrice);
+                    totalPriceElem.textContent = `Total Price: SGD $${totalPrice.toFixed(2)}`;
+                    buyNowBtn.style.display = 'block';
+                }
+            }
+
+            function emptyCart() {
+                localStorage.removeItem('cart');
+                cart = [];
+                renderCart();
+            }
+
+            function redirectToPaymentPortal() {
+                sessionStorage.setItem('cart', JSON.stringify(cart));
+                sessionStorage.setItem('totalPrice', totalPriceElem.textContent);
+                window.location.href = 'payment-portal.html';
+            }
+
+            emptyCartBtn.addEventListener('click', emptyCart);
+            buyNowBtn.addEventListener('click', redirectToPaymentPortal);
+
+            renderCart();
+        });
+    </script>
+</body>
+</html>
